@@ -1,4 +1,4 @@
-# [LIONS] - Group 12 (SEG 2105)
+# THE LIONS - Group 12 (SEG 2105)
 
 **Team Members**
 - Shehzad Qureshi - [#id]
