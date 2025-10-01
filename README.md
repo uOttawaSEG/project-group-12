@@ -1,10 +1,10 @@
-# [Team Name] - Group 12 (SEG 2105)
+# [LIONS] - Group 12 (SEG 2105)
 
 **Team Members**
 - Shehzad Qureshi - [#id]
 - Taha Rashid - #300403833
 - Abdurrahman Shearzad - [#id]
-- Yaorui Xu - [#id]
+- Yaorui Xu - [#300441616]
 - Anojan Sivaranjan - [#300406584]
 - [Name] - [#id]
 
