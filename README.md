@@ -3,7 +3,7 @@
 **Team Members**
 - Shehzad Qureshi - [#id]
 - Taha Rashid - #300403833
-- Abdurrahman Shearzad - [#id]
+- Abdurrahman Shearzad - #300436075
 - Yaorui Xu - [#300441616]
 - Anojan Sivaranjan - [#300406584]
 - [Name] - [#id]
