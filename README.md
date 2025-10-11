@@ -1,13 +1,11 @@
 # THE LIONS - Group 12 (SEG 2105)
 
 **Team Members**
-- Shehzad Qureshi - [#id]
+- Shehzad Qureshi - #id
 - Taha Rashid - #300403833
 - Abdurrahman Shearzad - #300436075
-- Yaorui Xu - [#300441616]
-- Anojan Sivaranjan - [#300406584]
-- [Name] - [#id]
-
+- Yaorui Xu - #300441616
+- Anojan Sivaranjan - #300406584
 ---
 
 This projects implements **Online Tutoring Appointment Management System (OTAMS)**. OTAMS is a **mobile application** designed to streamline the process of tutoring appointment scheduling at the University of Ottawa Help Centre. 
