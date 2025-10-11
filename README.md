@@ -1,7 +1,7 @@
 # THE LIONS - Group 12 (SEG 2105)
 
 **Team Members**
-- Shehzad Qureshi - #id
+- Shehzad Qureshi - #300408312
 - Taha Rashid - #300403833
 - Abdurrahman Shearzad - #300436075
 - Yaorui Xu - #300441616
