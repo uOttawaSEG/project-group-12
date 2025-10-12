@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/edtTeacherAppTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UOttawa Tutor App"
+        android:textColor="@color/dark_red"
+        android:textSize="40sp"
+        tools:layout_editor_absoluteX="36dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/edtTeacherRegistrationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Teacher Registration Form"
+        android:textColor="@color/dark_red"
+        android:textSize="25sp"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="94dp" />
+
+    <EditText
+        android:id="@+id/edtTeacherFirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="First Name:"
+        android:textColor="@color/dark_red"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="156dp" />
+
+    <EditText
+        android:id="@+id/edtTeacherLastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Last Name:"
+        android:textColor="@color/dark_red"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="215dp" />
+
+    <EditText
+        android:id="@+id/edtTeacherEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Email Adress:"
+        android:textColor="@color/dark_red"
+        android:inputType="textEmailAddress"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="278dp" />
+
+    <EditText
+        android:id="@+id/edtTeacherPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Password:"
+        android:textColor="@color/dark_red"
+        android:inputType="textPassword"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="343dp" />
+
+    <EditText
+        android:id="@+id/edtTeacherNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Phone Number:"
+        android:inputType="phone"
+        android:textColor="@color/dark_red"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="410dp" />
+
+    <EditText
+        android:id="@+id/edtTeachersHighestDegree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Highest Degree: "
+        android:textColor="@color/dark_red"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="476dp" />
+
+    <EditText
+        android:id="@+id/edtTeachersCoursesOffered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Courses Offered:"
+        android:textColor="@color/dark_red"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="534dp" />
+
+    <Button
+        android:id="@+id/edtTeacherRegisterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:background="@color/dark_red"
+        android:textColor="#FFFF"
+        tools:layout_editor_absoluteX="171dp"
+        tools:layout_editor_absoluteY="646dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
