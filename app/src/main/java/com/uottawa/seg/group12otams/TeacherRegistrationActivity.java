@@ -13,12 +13,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-public class TeacherRegistrationActivity extends AppCompatActivity{
+
+import java.util.ArrayList;
+
+public class TeacherRegistrationActivity extends AppCompatActivity {
 
 
     // Instance Variables
     private EditText edtTeacherFirstName, edtTeacherLastName, edtTeacherEmail, edtTeacherPassword, edtTeacherNumber, edtTeacherHighestDegree, edtTeacherCoursesOffered;
     private Button edtTeacherRegistrationButton;
+    private Database<Tutor> tutorDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity{
 
         initializeViews();
         setupClickListeners();
+        tutorDatabase = new Database<Tutor>(Tutor.class, "tutors");
     }
 
 
@@ -60,13 +65,23 @@ public class TeacherRegistrationActivity extends AppCompatActivity{
 
         // using an if statement to check
         if (validInput(firstName, lastName, email, password, phoneNumber, degree, courses)) {
+            // Convert comma-seperated string of courses to ArrayList
+            ArrayList<String> coursesList = new ArrayList<String>();
+            String[] coursesArray = courses.split(",");
+            for (String course : coursesArray) {
+                coursesList.add(course.trim());
+            }
+
+            // add registration to database
+            Tutor newUser = new Tutor(firstName, lastName, email, password, phoneNumber, degree, coursesList);
+            tutorDatabase.createUser(newUser);
+
             // make a pop up message to show registration successful
             Toast.makeText(this, "Teacher Registration Successful", Toast.LENGTH_SHORT).show();
             // jump to the welcome page
             Intent intent = new Intent(this, WelcomeActivity.class);
             intent.putExtra("USER_ROLE", "Tutor");
             startActivity(intent);
-
         }
     }
 
@@ -151,10 +166,5 @@ public class TeacherRegistrationActivity extends AppCompatActivity{
         }
 
         return true;
-
-
-
-
     }
-
 }
