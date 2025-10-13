@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     // This method initializes the views when looking into one of the elements
     // looked at tutorial https://www.youtube.com/watch?v=hHD50che-v8&list=PLmYhEKb90q4upTnziTMzxMUGlra-KTYXu&index=3
     private void initializeViews() {
-        edtEmailAddressLog = findViewById(R.id.edtEmailAdressLog);
+        edtEmailAddressLog = findViewById(R.id.edtEmailAddressLog);
         edtPasswordLog = findViewById(R.id.edtPasswordLog);
         btnLoginLog = findViewById(R.id.btnLoginLog);
         btnRegisterAsTeacher = findViewById(R.id.btnRegisterAsTeacher);

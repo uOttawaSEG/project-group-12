@@ -20,11 +20,11 @@
         android:textSize="40sp" />
 
     <EditText
-        android:id="@+id/edtEmailAdressLog"
+        android:id="@+id/edtEmailAddressLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Email Adress"
+        android:hint="Email Address"
         android:inputType="text" />
 
     <EditText
