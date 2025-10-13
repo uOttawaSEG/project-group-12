@@ -137,6 +137,7 @@ public class StudentRegistrationActivity extends AppCompatActivity {
         }
 
         // actually wait it's a title, so it should only be words
+        // TODO: allow spacing in program names, ex. "Computer Science" instead of "ComputerScience"
         if (!program.matches("[a-zA-Z]+")) {
             edtStudentStudy.setError("Please enter a proper program of study");
             return false;
@@ -144,11 +145,3 @@ public class StudentRegistrationActivity extends AppCompatActivity {
         return true;
     }
 }
-
-
-
-
-
-
-
-
