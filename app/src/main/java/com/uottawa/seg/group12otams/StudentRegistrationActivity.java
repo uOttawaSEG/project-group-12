@@ -19,6 +19,7 @@ public class StudentRegistrationActivity extends AppCompatActivity {
     // Instance variables
     private EditText edtStudentFirstName, edtStudentLastName, edtStudentEmail, edtStudentPassword, edtStudentNumber, edtStudentStudy;
     private Button edtStudentRegisterButton;
+    private Database<Student> studentDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class StudentRegistrationActivity extends AppCompatActivity {
 
         initializeViews();
         setupClickListeners();
+        studentDatabase = new Database<Student>(Student.class, "students");
     }
 
     // Initializing the views
@@ -57,9 +59,14 @@ public class StudentRegistrationActivity extends AppCompatActivity {
 
         // after checking with a boolean method to see if valid input, move on to the welcome page
         if (validInput(firstName, lastName, email, password, phoneNumber, program)) {
+            // add registration to database
+            Student newUser = new Student(firstName, lastName, email, password, phoneNumber, program);
+            studentDatabase.createUser(newUser);
+
             // want to alert user that registration was successful
             // learned how to do it by this video: https://www.youtube.com/watch?v=hQDr7NIBS7Y
             Toast.makeText(this, "Student Registration Successful", Toast.LENGTH_SHORT).show();
+
             // making the jump to the welcome class
             Intent intent = new Intent(this, WelcomeActivity.class);
             intent.putExtra("USER_ROLE", "Student");
@@ -131,7 +138,7 @@ public class StudentRegistrationActivity extends AppCompatActivity {
 
         // actually wait it's a title, so it should only be words
         if (!program.matches("[a-zA-Z]+")) {
-            edtStudentLastName.setError("Please enter a proper program of study");
+            edtStudentStudy.setError("Please enter a proper program of study");
             return false;
         }
         return true;
