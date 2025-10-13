@@ -37,14 +37,14 @@ public class TeacherRegistrationActivity extends AppCompatActivity {
 
     // initializing the views when clicking
     private void initializeViews() {
-        edtTeacherFirstName.findViewById(R.id.edtTeacherFirstName);
-        edtTeacherLastName.findViewById(R.id.edtTeacherLastName);
-        edtTeacherEmail.findViewById(R.id.edtTeacherEmail);
-        edtTeacherPassword.findViewById(R.id.edtTeacherPassword);
-        edtTeacherNumber.findViewById(R.id.edtTeacherNumber);
-        edtTeacherHighestDegree.findViewById(R.id.edtTeachersHighestDegree);
-        edtTeacherCoursesOffered.findViewById(R.id.edtTeachersCoursesOffered);
-        edtTeacherRegistrationButton.findViewById(R.id.edtTeacherRegisterButton);
+        edtTeacherFirstName = findViewById(R.id.edtTeacherFirstName);
+        edtTeacherLastName = findViewById(R.id.edtTeacherLastName);
+        edtTeacherEmail = findViewById(R.id.edtTeacherEmail);
+        edtTeacherPassword = findViewById(R.id.edtTeacherPassword);
+        edtTeacherNumber = findViewById(R.id.edtTeacherNumber);
+        edtTeacherHighestDegree = findViewById(R.id.edtTeachersHighestDegree);
+        edtTeacherCoursesOffered = findViewById(R.id.edtTeachersCoursesOffered);
+        edtTeacherRegistrationButton = findViewById(R.id.edtTeacherRegisterButton);
     }
 
 
