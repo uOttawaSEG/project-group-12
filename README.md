@@ -7,7 +7,11 @@
 - Yaorui Xu - #300441616
 - Anojan Sivaranjan - #300406584
 ---
+**ADMIN CREDENTIALS**
+- Username: admin@admin.com
+- Password: admin1234
 
+---
 This projects implements **Online Tutoring Appointment Management System (OTAMS)**. OTAMS is a **mobile application** designed to streamline the process of tutoring appointment scheduling at the University of Ottawa Help Centre. 
 
 OTAMS supports three types of users: **Student**, **Tutor**, and **Administrator**.
