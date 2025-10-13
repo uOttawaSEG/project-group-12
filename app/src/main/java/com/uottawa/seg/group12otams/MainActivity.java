@@ -14,8 +14,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Dummy test code for DB
-        Database database = new Database();
-        database.retrieveAllUsers();
+        Database database = new Database<Administrator>(Administrator.class, "administrators");
         
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);

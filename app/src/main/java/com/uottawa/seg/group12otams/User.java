@@ -3,6 +3,7 @@ package com.uottawa.seg.group12otams;
 public abstract class User {
     protected String firstName;
     protected String lastName;
+    // NOTE: email is a unique key only associated to a single User
     protected String email;
     protected String password;
     protected String phoneNumber;
@@ -14,6 +15,8 @@ public abstract class User {
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
+
+    public User() {}
 
     public String getFirstName() {
         return firstName;
@@ -68,4 +71,6 @@ public abstract class User {
     public void displayWelcomeMessage() {
         System.out.println("Welcome! You are logged in as " + getRole() + ".");
     }
+
+    public abstract void update(User user);
 }

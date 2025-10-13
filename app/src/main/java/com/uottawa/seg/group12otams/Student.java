@@ -10,6 +10,8 @@ public class Student extends User {
         this.programOfStudy = programOfStudy;
     }
 
+    public Student() {}
+
     public String getProgramOfStudy() {
         return programOfStudy;
     }
@@ -21,5 +23,16 @@ public class Student extends User {
     @Override
     public String getRole() {
         return "Student";
+    }
+
+    @Override
+    public void update(User user) {
+        Student student = (Student) user;
+        this.firstName = student.firstName;
+        this.lastName = student.lastName;
+        this.email = student.email;
+        this.password = student.password;
+        this.phoneNumber = student.phoneNumber;
+        this.programOfStudy = student.programOfStudy;
     }
 }

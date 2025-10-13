@@ -18,26 +18,35 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import kotlin.NotImplementedError;
-public class Database {
-    private static String TAG = "Database";
-    // TODO: change class type to custom type
-    private static ArrayList<Object> users;
-    private static FirebaseFirestore db;
-    public Database() {
-        Log.e(TAG, "Database object created");
+
+public class Database<E> {
+    private String TAG;
+    private Class<E> userClass;
+    private FirebaseFirestore db;
+    private ArrayList<E> users;
+    private String dbCollection;
+    public Database(Class<E> userClass, String dbCollection) {
+        // Pass in the class, used to convert Firebase responses to objects later
+        this.userClass = userClass;
+        // Create a Firebase instance
+        db = FirebaseFirestore.getInstance();
+        users = new ArrayList<E>();
+        this.dbCollection = dbCollection;
+        TAG = "Database-" + dbCollection;
+
+        // Retrieve all users from DB
+        this.retrieveAllUsers();
+
+        Log.e(TAG, TAG + " object created");
     }
 
     // Retrieves all users and updates the "users" class variable
-    // Throws an error if a problem occurs
     public void retrieveAllUsers() {
-        // Sets users and Firebase class variables
-        users = new ArrayList<Object>();
-        db = FirebaseFirestore.getInstance();
-
         // Retrieve all current user data and store into memory
-        db.collection("users")
+        db.collection(dbCollection)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -45,11 +54,8 @@ public class Database {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 // Save all user data into "users"
-                                Object user = document.toObject(Object.class);
-                                // TODO: uncomment when using custom class
-                                // user.id = document.getId();
+                                E user = document.toObject(userClass);
                                 if (user != null) {
-                                    Log.d(TAG, user.toString());
                                     users.add(user);
                                 }
 
@@ -66,15 +72,12 @@ public class Database {
         Log.e(TAG, "Successfully retrieved all users");
     }
 
-    // Retrieves a specific user with the given id in the given collection, and updates the corresponding object in the "users" class variable
-    // Throws an error if a problem occurs
-    public void retrieveUser(String id, String collection) {
+    // Retrieves a specific user with the given email in the given collection, and updates the corresponding object in the "users" class variable
+    public void retrieveUser(String email) {
         // Get the specified user
         DocumentReference docRef = db
-                .collection("users")
-                .document(collection)
-                .collection(collection)
-                .document(id);
+                .collection(dbCollection)
+                .document(email);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -83,24 +86,21 @@ public class Database {
                     // Get the user data
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-
-                        Object user = document.toObject(Object.class);
-                        // user.id = id;
+                        E user = document.toObject(userClass);
 
                         // Update "users" List
-                        // TODO: uncomment when User class is implemented
-//                        // Find the original object
-//                        Object originalUser = users.stream()
-//                                .filter(u -> u.id == user.id)
-//                                .findFirst()
-//                                .orElse(null);
-//                        // Add if it did not exist before
-//                        if (originalUser == null) users.add(user);
-//                        else {
-//                            // Else update the object
-//                            // TODO: implement "update" method in User class. Check if we can simply do "this = updatedUser"?
-//                            // originalUser.update(user);
-//                        }
+                        // Find the original object
+                        E originalUser = users.stream()
+                                .filter(u -> Objects.equals(((User) u).email, email))
+                                .findFirst()
+                                .orElse(null);
+                        // Add if it did not exist before
+                        if (originalUser == null) users.add(user);
+                        else {
+                            ((User) originalUser).update((User) user);
+                            // users.remove(originalUser);
+                            // users.add(user);
+                        }
 
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     } else {
@@ -117,75 +117,70 @@ public class Database {
         Log.e(TAG, "Successfully retrieved user");
     }
 
-    // Returns a user with the given specified id. If no user is found, returns null
-    // Throws an error if a problem occurs
-    public Object getUser(String id) {
-        // TODO: uncomment when User class is implemented
-//        return users.stream()
-//            .filter(u -> u.id == user.id)
-//            .findFirst()
-//            .orElse(null);
+    // Returns a user with the given specified email. If no user is found, returns null
+    public E getUser(String email) {
+        E filteredUser = users.stream()
+            .filter(u -> Objects.equals(((User) u).email, email))
+            .findFirst()
+            .orElse(null);
         // Log method success
-//        Log.e(TAG, "Successfully got user");
-        throw new NotImplementedError();
+        Log.e(TAG, "Successfully got user");
+        return filteredUser;
     }
 
-    // Creates a user of the specified collection in the database, and returns its assigned id in the database.
-    // Throws an error if a problem occurs
-    // NOTE: we may want to manually set the id of the object to a PK, like an email
-    public String createUser(Object user, String collection) {
-//        TODO: uncomment when User class is implemented
-//        // Add to database
-//        db.collection("users")
-//                .document(collection)
-//                .collection(collection)
-//                .document(user.id)
-//                .set(user);
-//
-//        // Add to List
-//        users.add(user);
+    // Creates a user of the specified collection in the database, and returns its assigned id (email) in the database.
+    public String createUser(E user) {
+        // Add to database
+        db.collection(dbCollection)
+                .document(((User) user).email)
+                .set(user);
+
+        // Add to List
+        users.add(user);
         // Log method success
-//        Log.e(TAG, "Successfully created user");
-        throw new NotImplementedError();
+        Log.e(TAG, "Successfully created user");
+        return ((User) user).email;
     }
 
     // Updates a user of the specified collection.
-    // Throws an error if the user is not found, or if a problem occurs
-    public void updateUser(Object user, String collection) throws Exception {
-        // TODO: uncomment when User class is implemented
+    // Throws an error if the user could not be found
+    public void updateUser(E user) throws Exception {
+        // NOTE: after some testing, it looks like update does not work properly
+        // We need to do async/await, and block the call so that we fully load in
+        // all users, then we can run update. Will check back on this in the future
+        throw new NotImplementedError();
+
 //        // Find the original object in List
-//        Object originalUser = users.stream()
-//                .filter(u -> u.id == user.id)
+//        E originalUser = users.stream()
+//                .filter(u -> Objects.equals(((User) u).email, ((User) user).email))
 //                .findFirst()
 //                .orElse(null);
 //        // Throw error if it did not exist before
-//        if (originalUser == null) throw new Exception("");
+//        if (originalUser == null) {
+//            throw new Exception("User not found while updating");
+//        }
 //
 //        // Update in database
-//        db.collection("users")
-//                .document(collection)
-//                .collection(collection)
-//                .document(user.id)
+//        db.collection(dbCollection)
+//                .document(((User) user).email)
 //                .set(user);
-
-        // Update in List
-        // TODO: implement "update" method in User class. Check if we can simply do "this = updatedUser"?
-        // originalUser.update(user);
-
-        // Log method success
-        //  Log.e(TAG, "Successfully updated user");
-        throw new NotImplementedError();
+//
+//        // Update in List
+//        // TODO: replace with "update" method
+//        users.remove(originalUser);
+//        users.add(user);
+//
+//        // Log method success
+//        Log.e(TAG, "Successfully updated user");
     }
 
-    // Deletes a user with the given id of the specified collection.
+    // Deletes a user with the given email of the specified collection.
     // Throws an error if a problem occurs.
-    public void deleteUser(String id, String collection) {
+    public void deleteUser(String email) {
         // Get the specified user
         DocumentReference docRef = db
-                .collection("users")
-                .document(collection)
-                .collection(collection)
-                .document(id);
+                .collection(dbCollection)
+                .document(email);
 
         docRef.delete()
                 .addOnCompleteListener(aVoid -> Log.e(TAG, "Successfully deleted user"))

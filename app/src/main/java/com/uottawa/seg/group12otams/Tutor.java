@@ -12,6 +12,8 @@ public class Tutor extends User {
         this.coursesOffered = coursesOffered;
     }
 
+    public Tutor() {}
+
     public String getHighestDegree() {
         return highestDegree;
     }
@@ -31,5 +33,17 @@ public class Tutor extends User {
     @Override
     public String getRole() {
         return "Tutor";
+    }
+
+    @Override
+    public void update(User user) {
+        Tutor tutor = (Tutor) user;
+        this.firstName = tutor.firstName;
+        this.lastName = tutor.lastName;
+        this.email = tutor.email;
+        this.password = tutor.password;
+        this.phoneNumber = tutor.phoneNumber;
+        this.highestDegree = tutor.highestDegree;
+        this.coursesOffered = tutor.coursesOffered;
     }
 }

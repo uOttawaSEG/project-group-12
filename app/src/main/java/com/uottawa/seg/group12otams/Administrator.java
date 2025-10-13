@@ -5,8 +5,20 @@ public class Administrator extends User {
         super(firstName, lastName, email, password, phoneNumber);
     }
 
+    public Administrator() {}
+
     @Override
     public String getRole() {
         return "Administrator";
+    }
+
+    @Override
+    public void update(User user) {
+        Administrator administrator = (Administrator) user;
+        this.firstName = administrator.firstName;
+        this.lastName = administrator.lastName;
+        this.email = administrator.email;
+        this.password = administrator.password;
+        this.phoneNumber = administrator.phoneNumber;
     }
 }
