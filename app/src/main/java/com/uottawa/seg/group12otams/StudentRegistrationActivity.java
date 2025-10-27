@@ -68,7 +68,7 @@ public class StudentRegistrationActivity extends AppCompatActivity {
             Toast.makeText(this, "Student Registration Successful", Toast.LENGTH_SHORT).show();
 
             // making the jump to the welcome class
-            Intent intent = new Intent(this, WelcomeActivity.class);
+            Intent intent = new Intent(this, PendingRequest.class);
             intent.putExtra("USER_ROLE", "Student");
             startActivity(intent);
         }
@@ -138,7 +138,7 @@ public class StudentRegistrationActivity extends AppCompatActivity {
 
         // actually wait it's a title, so it should only be words
         // TODO: allow spacing in program names, ex. "Computer Science" instead of "ComputerScience"
-        if (!program.matches("[a-zA-Z]+")) {
+        if (!program.matches("[a-zA-Z ]+")) {
             edtStudentStudy.setError("Please enter a proper program of study");
             return false;
         }

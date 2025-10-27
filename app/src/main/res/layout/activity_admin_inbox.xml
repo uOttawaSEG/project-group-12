@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="16dp">
+
+
+    <TextView
+        android:id="@+id/edtAdminPageTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="uOttawa OTAMS"
+        android:textAlignment="center"
+        android:textColor="@color/dark_red"
+        android:textSize="30sp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/edtAdminInboxText"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:text="Admin Inbox"
+        android:textAlignment="center"
+        android:textColor="@color/dark_red"
+        android:textSize="25sp"
+        android:layout_marginBottom="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="17dp">
+
+        <Button
+            android:id="@+id/btnPendingRequests"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pending Requests"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/dark_red"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btnRejectedRequests"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Rejected Requests"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/dark_gray"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pendingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/pendingRequestText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pending Registration Requests:"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewerPending"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rejectedLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/rejectedRequestText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rejected Registration Requests:"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewerRejected"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

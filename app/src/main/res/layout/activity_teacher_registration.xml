@@ -127,7 +127,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="640dp"
-        android:background="@color/dark_red"
+        android:backgroundTint="@color/dark_red"
         android:text="Register"
         android:textAlignment="center"
         android:textColor="#FFFF"

@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="50dp"
-        android:text="UOttawa Tutoring App"
+        android:text="uOttawa OTAMS"
         android:textColor="@color/dark_red"
         android:textSize="40sp" />
 
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:background="@color/dark_red"
+        android:backgroundTint="@color/dark_red"
         android:layout_marginBottom="40dp"
         android:textColor="#FFFF"
         android:textColorLink="#B4170D" />
@@ -65,13 +65,13 @@
         android:text="Register as a Student"
         android:layout_marginBottom="22dp"
         android:textColor="#FFFF"
-        android:background="@color/dark_red" />
+        android:backgroundTint="@color/dark_red" />
 
     <Button
         android:id="@+id/btnRegisterAsTeacher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dark_red"
+        android:backgroundTint="@color/dark_red"
         android:text="Register as a Teacher"
         android:textColor="#FFF" />
 

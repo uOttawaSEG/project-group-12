@@ -79,7 +79,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity {
             // make a pop up message to show registration successful
             Toast.makeText(this, "Teacher Registration Successful", Toast.LENGTH_SHORT).show();
             // jump to the welcome page
-            Intent intent = new Intent(this, WelcomeActivity.class);
+            Intent intent = new Intent(this, PendingRequest.class);
             intent.putExtra("USER_ROLE", "Tutor");
             startActivity(intent);
         }

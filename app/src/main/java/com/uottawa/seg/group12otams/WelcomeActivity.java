@@ -19,7 +19,9 @@ public class WelcomeActivity extends AppCompatActivity{
 
     // Instance variables
     private TextView edtWelcomeText;
-    private Button edtWelcomeLogout;
+    private Button edtWelcomeLogout, edtAdminInboxButton;
+
+    private String userRole; // store the user role
 
 
     @Override
@@ -37,20 +39,29 @@ public class WelcomeActivity extends AppCompatActivity{
     private void initializeViews() {
         edtWelcomeText = findViewById(R.id.edtWelcomeText);
         edtWelcomeLogout = findViewById(R.id.edtWelcomeLogout);
+        edtAdminInboxButton = findViewById(R.id.edtAdminInboxButton);
     }
 
     // logic when it comes to the welcome text on the welcome page
 
     private void displayWelcomeMessage() {
-        String role = getIntent().getStringExtra("USER_ROLE");
+        userRole = getIntent().getStringExtra("USER_ROLE");
         // in case there is no user role
-        if (role == null) {
-            role = "user";
+        if (userRole == null) {
+            userRole = "user";
         }
 
         // updating the message text
-        String welcomeMessage = "Welcome! You are logged in as " + role;
+        String welcomeMessage = "Welcome! You are logged in as " + userRole;
         edtWelcomeText.setText(welcomeMessage);
+
+        // show the admin inbox button only for the admin
+        if ("Administrator".equals(userRole)) {
+            edtAdminInboxButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            edtAdminInboxButton.setVisibility(View.GONE);
+        }
     }
 
     // clicker method to go back to main page after clicking log out
@@ -61,6 +72,12 @@ public class WelcomeActivity extends AppCompatActivity{
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish(); // closes and stops the activity
+        });
+
+        // gotta add one now for the admin inbox
+        edtAdminInboxButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, AdminInboxActivity.class);
+            startActivity(intent);
         });
     }
 
