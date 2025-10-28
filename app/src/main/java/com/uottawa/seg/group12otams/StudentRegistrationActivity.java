@@ -61,14 +61,14 @@ public class StudentRegistrationActivity extends AppCompatActivity {
         if (validInput(firstName, lastName, email, password, phoneNumber, program)) {
             // add registration to database
             Student newUser = new Student(firstName, lastName, email, password, phoneNumber, program);
-            studentDatabase.createUser(newUser);
+            studentDatabase.createRegistrationRequest(newUser, "Student");
 
             // want to alert user that registration was successful
             // learned how to do it by this video: https://www.youtube.com/watch?v=hQDr7NIBS7Y
-            Toast.makeText(this, "Student Registration Successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Student Registration Pending", Toast.LENGTH_SHORT).show();
 
             // making the jump to the welcome class
-            Intent intent = new Intent(this, WelcomeActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("USER_ROLE", "Student");
             startActivity(intent);
         }

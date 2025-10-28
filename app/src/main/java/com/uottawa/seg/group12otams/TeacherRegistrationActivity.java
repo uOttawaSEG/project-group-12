@@ -32,6 +32,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity {
         initializeViews();
         setupClickListeners();
         tutorDatabase = new Database<Tutor>(Tutor.class, "tutors");
+
     }
 
 
@@ -74,12 +75,12 @@ public class TeacherRegistrationActivity extends AppCompatActivity {
 
             // add registration to database
             Tutor newUser = new Tutor(firstName, lastName, email, password, phoneNumber, degree, coursesList);
-            tutorDatabase.createUser(newUser);
+            tutorDatabase.createRegistrationRequest(newUser, "Tutor");
 
             // make a pop up message to show registration successful
-            Toast.makeText(this, "Teacher Registration Successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Tutor Registration Pending", Toast.LENGTH_SHORT).show();
             // jump to the welcome page
-            Intent intent = new Intent(this, WelcomeActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("USER_ROLE", "Tutor");
             startActivity(intent);
         }

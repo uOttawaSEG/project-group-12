@@ -5,6 +5,10 @@ import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.content.Intent;
+import android.widget.Toast;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.android.gms.tasks.Task;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
         initializeViews();
         setupClickListeners();
     }
-    // This method initializes the views when looking into one of the elements
-    // looked at tutorial https://www.youtube.com/watch?v=hHD50che-v8&list=PLmYhEKb90q4upTnziTMzxMUGlra-KTYXu&index=3
+
     private void initializeViews() {
         edtEmailAddressLog = findViewById(R.id.edtEmailAddressLog);
         edtPasswordLog = findViewById(R.id.edtPasswordLog);
@@ -67,13 +70,48 @@ public class MainActivity extends AppCompatActivity {
         String password = edtPasswordLog.getText().toString().trim();
 
         // if statement to check logic
-        User user = searchDatabase(email);
-        if (validLoginInput(email, password) && user != null && user.password.equals(password)) {
-            Intent intent = new Intent(this, WelcomeActivity.class);
-            String role = user.getRole();
-            intent.putExtra("USER_ROLE", role);
-            startActivity(intent);
+        if (!validLoginInput(email, password)) {
+            return;
         }
+
+        // Check if admin
+        Administrator admin = administratorDatabase.getUser(email);
+        if (admin != null && admin.getPassword().equals(password)) {
+            Intent intent = new Intent(this, AdminApprovalActivity.class);
+            intent.putExtra("USER_ROLE", "Administrator");
+            startActivity(intent);
+            return;
+        }
+
+        // Check registration request status
+        studentDatabase.getRegistrationRequest(email, task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+                DocumentSnapshot doc = task.getResult();
+                String status = doc.getString("status");
+                String role = doc.getString("role");
+
+                switch (status) {
+                    case "Approved":
+                        User user = role.equals("Student") ? studentDatabase.getUser(email) : tutorDatabase.getUser(email);
+                        if (user != null && user.getPassword().equals(password)) {
+                            Intent intent = new Intent(this, WelcomeActivity.class);
+                            intent.putExtra("USER_ROLE", role);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case "Rejected":
+                        Toast.makeText(this, "Registration rejected. Contact (123) 456-7890.", Toast.LENGTH_LONG).show();
+                        break;
+                    case "Pending":
+                        Toast.makeText(this, "Registration is pending approval.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            } else {
+                Toast.makeText(this, "No registration found.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // input protection in case any valid input is entered

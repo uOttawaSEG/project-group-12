@@ -7,6 +7,7 @@ public abstract class User {
     protected String email;
     protected String password;
     protected String phoneNumber;
+    protected String status;
 
     public User(String firstName, String lastName, String email, String password, String phoneNumber) {
         this.firstName = firstName;
@@ -14,6 +15,7 @@ public abstract class User {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.status = "Pending";
     }
 
     public User() {}
@@ -56,6 +58,9 @@ public abstract class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public boolean login(String email, String password) {

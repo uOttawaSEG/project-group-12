@@ -19,6 +19,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
+
 
 import kotlin.NotImplementedError;
 
@@ -185,5 +188,65 @@ public class Database<E> {
         docRef.delete()
                 .addOnCompleteListener(aVoid -> Log.e(TAG, "Successfully deleted user"))
                 .addOnFailureListener(error -> Log.e(TAG, "Error deleting user", error));
+    }
+
+    // NEW: Create a registration request
+    public void createRegistrationRequest(User user, String role) {
+        Map<String, Object> request = new HashMap<>();
+        request.put("firstName", user.getFirstName());
+        request.put("lastName", user.getLastName());
+        request.put("email", user.getEmail());
+        request.put("password", user.getPassword());
+        request.put("phoneNumber", user.getPhoneNumber());
+        request.put("role", role);
+        request.put("status", "Pending");
+        if (user instanceof Student) {
+            request.put("programOfStudy", ((Student) user).getProgramOfStudy());
+        } else if (user instanceof Tutor) {
+            request.put("highestDegree", ((Tutor) user).getHighestDegree());
+            request.put("coursesOffered", ((Tutor) user).getCoursesOffered());
+        }
+
+        db.collection("registration_requests")
+                .document(user.getEmail())
+                .set(request)
+                .addOnSuccessListener(aVoid -> Log.e(TAG, "Registration request created"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error creating registration request", e));
+    }
+
+    // NEW: Get registration requests by status
+    public void getRegistrationRequests(String status, OnCompleteListener<QuerySnapshot> listener) {
+        db.collection("registration_requests")
+                .whereEqualTo("status", status)
+                .get()
+                .addOnCompleteListener(listener);
+    }
+
+    // NEW: Update request status
+    public void updateRequestStatus(String email, String status, OnCompleteListener<Void> listener) {
+        db.collection("registration_requests")
+                .document(email)
+                .update("status", status)
+                .addOnCompleteListener(listener);
+    }
+
+    // NEW: Approve user and move to appropriate collection
+    public void approveUser(User user, String role) {
+        String collection = role.equals("Student") ? "students" : "tutors";
+        db.collection(collection)
+                .document(user.getEmail())
+                .set(user)
+                .addOnSuccessListener(aVoid -> {
+                    Log.e(TAG, "User approved");
+                    updateRequestStatus(user.getEmail(), "Approved", task -> {});
+                });
+    }
+
+    // NEW: Get registration request by email
+    public void getRegistrationRequest(String email, OnCompleteListener<DocumentSnapshot> listener) {
+        db.collection("registration_requests")
+                .document(email)
+                .get()
+                .addOnCompleteListener(listener);
     }
 }

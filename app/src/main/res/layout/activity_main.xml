@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/dark_red"
-        android:text="Register as a Teacher"
+        android:text="Register as a Tutor"
         android:textColor="#FFF" />
 
     <TextView

@@ -24,6 +24,7 @@
         <activity android:name=".TeacherRegistrationActivity" />
         <activity android:name=".StudentRegistrationActivity" />
         <activity android:name=".WelcomeActivity" />
+        <activity android:name=".AdminApprovalActivity" />
     </application>
 
 </manifest>
