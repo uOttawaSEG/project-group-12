@@ -3,121 +3,136 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@drawable/purple_gradient_background">
 
     <TextView
         android:id="@+id/edtTeacherAppTitle"
-        android:layout_width="405dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="uOttawa OTAMS"
         android:textAlignment="center"
-        android:textColor="@color/dark_red"
         android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#80000000"
+        android:shadowDx="10"
+        android:shadowDy="10"
+        android:shadowRadius="5"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"/>
 
     <TextView
         android:id="@+id/edtStudentRegTitle"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="94dp"
         android:text="Student Registration Form"
         android:textAlignment="center"
-        android:textColor="@color/dark_red"
-        android:textSize="25sp"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        app:layout_constraintTop_toBottomOf="@+id/edtTeacherAppTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
 
     <EditText
         android:id="@+id/edtStudentFirstName"
-        android:layout_width="400dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="156dp"
-        android:ems="10"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:hint="First Name"
+        android:padding="14dp"
+        android:background="@drawable/rounded_input_white"
         android:inputType="text"
-        android:textColor="@color/dark_red"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@+id/edtStudentRegTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
 
     <EditText
         android:id="@+id/edtStudentLastName"
-        android:layout_width="400dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="216dp"
-        android:ems="10"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:hint="Last Name"
+        android:padding="14dp"
+        android:background="@drawable/rounded_input_white"
         android:inputType="text"
-        android:textColor="@color/dark_red"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@+id/edtStudentFirstName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="14dp"/>
 
     <EditText
         android:id="@+id/edtStudentEmail"
-        android:layout_width="400dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="276dp"
-        android:ems="10"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:hint="Email Address"
+        android:padding="14dp"
+        android:background="@drawable/rounded_input_white"
         android:inputType="textEmailAddress"
-        android:textColor="@color/dark_red"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@+id/edtStudentLastName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="14dp"/>
 
     <EditText
         android:id="@+id/edtStudentPassWord"
-        android:layout_width="400dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="340dp"
-        android:ems="10"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:hint="Password"
+        android:padding="14dp"
+        android:background="@drawable/rounded_input_white"
         android:inputType="textPassword"
-        android:textColor="@color/dark_red"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@+id/edtStudentEmail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="14dp"/>
 
     <EditText
         android:id="@+id/edtStudentNumber"
-        android:layout_width="400dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="408dp"
-        android:ems="10"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:hint="Phone Number"
+        android:padding="14dp"
+        android:background="@drawable/rounded_input_white"
         android:inputType="phone"
-        android:textColor="@color/dark_red"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@+id/edtStudentPassWord"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="14dp"/>
 
     <EditText
         android:id="@+id/edtStudentStudy"
-        android:layout_width="400dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="476dp"
-        android:ems="10"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:hint="Program of Study"
+        android:padding="14dp"
+        android:background="@drawable/rounded_input_white"
         android:inputType="text"
-        android:textColor="@color/dark_red"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@+id/edtStudentNumber"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="14dp"/>
 
     <Button
         android:id="@+id/edtStudentRegisterButton"
-        android:layout_width="300dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="640dp"
-        android:background="@color/dark_red"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:text="Register"
-        android:textAlignment="center"
-        android:textColor="#FFFF"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button_purple"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/edtStudentStudy"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

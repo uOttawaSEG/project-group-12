@@ -4,43 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background">
+    android:padding="24dp"
+    android:background="@drawable/purple_gradient_background">
 
     <TextView
         android:id="@+id/edtWelcomeTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="32dp"
         android:text="UOttawa Tutor App"
-        android:textColor="@color/dark_red"
-        android:textSize="40sp"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp" />
 
     <TextView
         android:id="@+id/edtWelcomeText"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="268dp"
         android:text="Welcome!"
-        android:textColor="@color/dark_red"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:textColor="#FFFFFF"
+        android:textSize="26sp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/edtWelcomeTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="200dp" />
 
     <Button
         android:id="@+id/edtWelcomeLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="642dp"
-        android:background="@color/dark_red"
-        android:text=" Log out"
-        android:textColor="#FFFF"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:text="Log out"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button_purple"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/edtWelcomeText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="260dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

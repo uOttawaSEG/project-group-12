@@ -6,82 +6,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="24dp"
     tools:context=".MainActivity"
-    android:background="@drawable/gradient_background" >
+    android:background="@drawable/purple_gradient_background">
 
     <TextView
         android:id="@+id/edtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="40dp"
+        android:fontFamily="@font/montserrat_bold"
         android:text="UOttawa Tutoring App"
-        android:textColor="@color/dark_red"
-        android:textSize="40sp" />
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#80000000"
+        android:shadowDx="10"
+        android:shadowDy="10"
+        android:shadowRadius="5" />
 
     <EditText
         android:id="@+id/edtEmailAddressLog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_height="55dp"
         android:hint="Email Address"
-        android:inputType="text" />
+        android:padding="14dp"
+        android:background="@drawable/rounded_input_white"
+        android:inputType="textEmailAddress"
+        android:layout_marginBottom="16dp" />
 
     <EditText
         android:id="@+id/edtPasswordLog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_height="55dp"
         android:hint="Password"
+        android:padding="14dp"
+        android:background="@drawable/rounded_input_white"
         android:inputType="textPassword"
-        android:layout_marginBottom="25dp"
-        android:minHeight="48dp" />
+        android:layout_marginBottom="26dp" />
 
     <Button
         android:id="@+id/btnLoginLog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:text="Login"
-        android:background="@color/dark_red"
-        android:layout_marginBottom="40dp"
-        android:textColor="#FFFF"
-        android:textColorLink="#B4170D" />
-
+        android:background="@drawable/rounded_button_purple"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginBottom="34dp" />
 
     <TextView
         android:id="@+id/edtDontHaveAnAccountLog"
-        android:layout_width="221dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="20dp"
         android:text="Don't have an Account?"
-        android:textColor="@color/dark_red"
-        android:textSize="20sp" />
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnRegisterAsStudent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:text="Register as a Student"
-        android:layout_marginBottom="22dp"
-        android:textColor="#FFFF"
-        android:background="@color/dark_red" />
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button_purple"
+        android:layout_marginBottom="18dp" />
 
     <Button
         android:id="@+id/btnRegisterAsTeacher"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/dark_red"
+        android:layout_height="55dp"
         android:text="Register as a Tutor"
-        android:textColor="#FFF" />
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button_purple" />
 
     <TextView
-        android:layout_width="wrap_content"
         android:id="@+id/txtDisplayInfoLog"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="20dp"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>

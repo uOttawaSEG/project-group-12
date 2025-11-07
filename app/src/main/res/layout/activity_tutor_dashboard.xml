@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/purple_gradient_background">
+
+    <TextView
+        android:id="@+id/tvTutorDashboardTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tutor Dashboard"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#80000000"
+        android:shadowDx="10"
+        android:shadowDy="10"
+        android:shadowRadius="5"
+        android:textAlignment="center"
+        android:layout_marginBottom="32dp" />
+
+    <Button
+        android:id="@+id/btnCreateAvailability"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Create Availability"
+        android:background="@drawable/rounded_button_purple"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginBottom="34dp" />
+
+    <Button
+        android:id="@+id/btnUpcomingSessions"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Upcoming Sessions"
+        android:background="@drawable/rounded_button_purple"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginBottom="34dp" />
+
+    <Button
+        android:id="@+id/btnPastSessions"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Past Sessions"
+        android:background="@drawable/rounded_button_purple"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginBottom="34dp" />
+
+    <Button
+        android:id="@+id/btnPendingRequests"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="Pending Requests"
+        android:background="@drawable/rounded_button_purple"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginBottom="34dp" />
+</LinearLayout>
