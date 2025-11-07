@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,8 @@ public class Database<E> {
     private FirebaseFirestore db;
     private ArrayList<E> users;
     private String dbCollection;
+    private ArrayList<TimeSlot> timeSlots;
+    private ArrayList<TimeSlotRequest> timeSlotRequests;
     public Database(Class<E> userClass, String dbCollection) {
         // Pass in the class, used to convert Firebase responses to objects later
         this.userClass = userClass;
@@ -248,5 +251,180 @@ public class Database<E> {
                 .document(email)
                 .get()
                 .addOnCompleteListener(listener);
+    }
+
+    // Deliverable 3
+    // Retrieves all timeslots
+    private void retrieveAllTimeSlots() {
+        // Retrieve all current tutoring timeslot data and store into memory
+        db.collection("time_slots")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Save all timeslot data into "timeslot"
+                                TimeSlot timeslot = document.toObject(TimeSlot.class);
+                                if (timeslot != null) {
+                                    timeSlots.add(timeslot);
+                                }
+
+                                // Print to Log
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
+        // Log method success
+        Log.e(TAG, "Successfully retrieved all timeslots");
+    }
+
+    // Returns timeslots of a specific tutor if specified, and all timeslots if not
+    public ArrayList<TimeSlot> getTimeSlots(Tutor tutor) {
+        // Get timeslots if null
+        if (timeSlots == null) retrieveAllTimeSlots();
+
+        // Return all timeslots if tutor is not specified
+        if (tutor == null) return timeSlots;
+
+        // Get and return timeslots of specified tutor
+        ArrayList<TimeSlot> specificTimeSlots = new ArrayList<>();
+
+        // Add all timeslots of a specific tutor
+        for (TimeSlot timeSlot : timeSlots) {
+            if (Objects.equals(timeSlot.getTutor(), tutor)) {
+                specificTimeSlots.add(timeSlot);
+            }
+        }
+
+        return specificTimeSlots;
+    }
+
+    // Create/update a specific timeslot
+    public String modifyTimeSlot(TimeSlot timeSlot) {
+        // Add to database
+        db.collection("time_slots")
+                .document(timeSlot.getTimeSlotId())
+                .set(timeSlot);
+
+        // Re-fetch all timeslots
+        retrieveAllTimeSlots();
+
+        // Log method success
+        Log.e(TAG, "Successfully modified time slot");
+        return timeSlot.getTimeSlotId();
+    }
+
+    // Delete a specific timeslot
+    public void deleteTimeSlot(String timeSlotId) {
+        // Get the specified timeSlot
+        DocumentReference docRef = db
+                .collection("time_slots")
+                .document(timeSlotId);
+
+        docRef.delete()
+                .addOnCompleteListener(aVoid -> Log.e(TAG, "Successfully deleted user"))
+                .addOnFailureListener(error -> Log.e(TAG, "Error deleting user", error));
+    }
+
+    // Create timeslot request
+    public void createTimeSlotRequest(Student student, TimeSlot timeSlot) {
+        // Create a simple HashMap to structure data (no need for class)
+        Map<String, Object> request = new HashMap<>();
+        request.put("studentId", student.getEmail());
+        request.put("timeSlotId", timeSlot.getTimeSlotId());
+        if (timeSlot.getTutor().getAutoApproveTimeSlotSessions() == true) {
+            request.put("status", "Approved");
+        } else {
+            request.put("status", "Pending");
+        }
+
+
+        // Add timeSlot request to db
+        db.collection("time_slot_requests")
+                .document(timeSlot.getTimeSlotId())
+                .set(request)
+                .addOnSuccessListener(aVoid -> Log.e(TAG, "Time slot request created"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error creating time slot request", e));
+    }
+
+    // Delete timeslot request
+    public void deleteTimeSlotRequest(String timeSlotId) {
+        // Get the specified timeSlot
+        DocumentReference docRef = db
+                .collection("time_slot_requests")
+                .document(timeSlotId);
+
+        // Delete from db
+        docRef.delete()
+                .addOnCompleteListener(aVoid -> Log.e(TAG, "Successfully deleted time slot request"))
+                .addOnFailureListener(error -> Log.e(TAG, "Error deleting time slot request", error));
+    }
+
+    // Approve or reject a timeslot request
+    public void approveTimeSlotRequest(String timeSlotId, boolean isApproved) {
+        // Update status in db
+        String status = "Approved";
+        if (!isApproved) status = "Rejected";
+
+        db.collection("time_slot_requests")
+                .document(timeSlotId)
+                .update("status", status)
+                .addOnSuccessListener(aVoid -> Log.e(TAG, "Time slot request updated"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error updating time slot request", e));
+    }
+
+    // Returns all timeSlotRequests
+    private void retrieveAllTimeSlotRequests() {
+        // Retrieve all current tutoring timeslot data and store into memory
+        db.collection("time_slot_requests")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Save all timeslot data into "timeslot"
+                                TimeSlotRequest timeSlotRequest = document.toObject(TimeSlotRequest.class);
+                                if (timeSlotRequest != null) {
+                                    timeSlotRequests.add(timeSlotRequest);
+                                }
+
+                                // Print to Log
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+
+        // Log method success
+        Log.e(TAG, "Successfully retrieved all timeslots requests");
+    }
+
+    // Return the timeSlotRequests for a specific tutor. Returns all timeSlotRequests if tutor is not specified (= null)
+    public ArrayList<TimeSlotRequest> getTimeSlotRequests(Tutor tutor) {
+        // Get timeslots requests if null
+        if (timeSlotRequests == null) retrieveAllTimeSlotRequests();
+
+        // Return all timeslots requests if tutor is not specified
+        if (tutor == null) return timeSlotRequests;
+
+        // Get and return timeslots requests of specified tutor
+        ArrayList<TimeSlotRequest> specificTimeSlotsRequests = new ArrayList<>();
+
+        // Add all timeslots of a specific tutor
+        for (TimeSlotRequest timeSlotRequest : timeSlotRequests) {
+            if (Objects.equals(timeSlotRequest.getTutorId(), tutor.getEmail())) {
+                specificTimeSlotsRequests.add(timeSlotRequest);
+            }
+        }
+
+        return specificTimeSlotsRequests;
     }
 }
