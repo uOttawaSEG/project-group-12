@@ -234,16 +234,15 @@ public class Database<E> {
     }
 
     // NEW: Approve user and move to appropriate collection
-    public void approveUser(User user, String role) {
-        String collection = role.equals("Student") ? "students" : "tutors";
-        db.collection(collection)
-                .document(user.getEmail())
-                .set(user)
-                .addOnSuccessListener(aVoid -> {
-                    Log.e(TAG, "User approved");
-                    updateRequestStatus(user.getEmail(), "Approved", task -> {});
-                });
-    }
+//    public void approveUser(E user) {
+//        db.collection(dbCollection)
+//                .document(((User) user).getEmail())
+//                .set(user)
+//                .addOnSuccessListener(aVoid -> {
+//                    Log.e(TAG, "User approved");
+//                    updateRequestStatus(((User) user).getEmail(), "Approved", task -> {});
+//                });
+//    }
 
     // NEW: Get registration request by email
     public void getRegistrationRequest(String email, OnCompleteListener<DocumentSnapshot> listener) {

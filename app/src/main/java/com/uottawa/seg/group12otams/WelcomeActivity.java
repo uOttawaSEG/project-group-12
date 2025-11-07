@@ -30,6 +30,8 @@ public class WelcomeActivity extends AppCompatActivity{
         initializeViews();
         displayWelcomeMessage();
         setupClickListeners();
+
+
     }
 
     // initialize the elements for their views

@@ -1,5 +1,7 @@
 package com.uottawa.seg.group12otams;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +57,9 @@ public class Tutor extends User {
 
     // Select start/end time
     // Needs to be valid (30min increments, future date, no overlapping time slots)
+    @Exclude
     public void setTimeSlot(Date startDate, Date endDate) {
+
         // Throw error if startDate is after endDate
         if (startDate.after(endDate)) {
             throw new IllegalArgumentException("Start date must be before end date");
@@ -95,6 +99,7 @@ public class Tutor extends User {
     }
 
     // Get upcoming sessions
+    @Exclude
     public ArrayList<TimeSlot> getUpcomingSessions() {
         // fetch from db
         ArrayList<TimeSlot> timeSlots = db.getTimeSlots(this);
@@ -113,6 +118,7 @@ public class Tutor extends User {
     }
 
     // Get past sessions
+    @Exclude
     public ArrayList<TimeSlot> getPastSessions() {
         // fetch from db
         ArrayList<TimeSlot> timeSlots = db.getTimeSlots(this);
@@ -131,6 +137,7 @@ public class Tutor extends User {
     }
 
     // Remove session
+    @Exclude
     public void removeSession(TimeSlot timeSlot) {
         // Check if a student has booked the timeSlot
         if (timeSlot.getBookedStudent() != null) {
@@ -143,27 +150,32 @@ public class Tutor extends User {
     }
 
     // Set autoApproveTimeSlotRequest
+    @Exclude
     public void setAutoApproveTimeSlotSessions(boolean autoApproveTimeSlotSessions) {
         this.autoApproveTimeSlotSessions = autoApproveTimeSlotSessions;
     }
 
     // Getter for autoApproveTimeSlotSessions
+    @Exclude
     public boolean getAutoApproveTimeSlotSessions() {
         return autoApproveTimeSlotSessions;
     }
 
     // Approve or reject a timeslot request
+    @Exclude
     public void setTimeSlotRequestStatus(String timeSlotId, boolean isApproved) {
         db.approveTimeSlotRequest(timeSlotId, isApproved);
     }
 
     // Get all timeSlot requests
+    @Exclude
     public ArrayList<TimeSlotRequest> getTimeSlotRequests() {
         // Fetch from db
         return db.getTimeSlotRequests(this);
     }
 
     // Get pending timeSlot requests
+    @Exclude
     public ArrayList<TimeSlotRequest> getPendingTimeSlotRequests() {
         // Fetch from db
         ArrayList<TimeSlotRequest> timeSlotRequests = db.getTimeSlotRequests(this);

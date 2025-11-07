@@ -1,6 +1,7 @@
 package com.uottawa.seg.group12otams;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -84,35 +85,46 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Check registration request status
-        studentDatabase.getRegistrationRequest(email, task -> {
-            if (task.isSuccessful() && task.getResult().exists()) {
-                DocumentSnapshot doc = task.getResult();
-                String status = doc.getString("status");
-                String role = doc.getString("role");
-
-                switch (status) {
-                    case "Approved":
-                        User user = role.equals("Student") ? studentDatabase.getUser(email) : tutorDatabase.getUser(email);
-                        if (user != null && user.getPassword().equals(password)) {
-                            Intent intent = new Intent(this, WelcomeActivity.class);
-                            intent.putExtra("USER_ROLE", role);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case "Rejected":
-                        Toast.makeText(this, "Registration rejected. Contact (123) 456-7890.", Toast.LENGTH_LONG).show();
-                        break;
-                    case "Pending":
-                        Toast.makeText(this, "Registration is pending approval.", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            } else {
-                Toast.makeText(this, "No registration found.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        studentDatabase.getRegistrationRequest(email, task -> handleRegistrationResponse(task, email, password));
     }
+
+    private void handleRegistrationResponse(Task<DocumentSnapshot> task, String email, String password) {
+        if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+            DocumentSnapshot doc = task.getResult();
+            String status = doc.getString("status");
+            String role = doc.getString("role");
+
+            if (status == null || role == null) {
+                Toast.makeText(this, "Registration data is incomplete.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            switch (status) {
+                case "Approved":
+                    User user = "Student".equals(role) ? studentDatabase.getUser(email) : tutorDatabase.getUser(email);
+                    if (user != null && user.getPassword().equals(password)) {
+                        Intent intent = new Intent(this, WelcomeActivity.class);
+                        intent.putExtra("USER_ROLE", role);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case "Rejected":
+                    Toast.makeText(this, "Registration rejected. Contact (123) 456-7890.", Toast.LENGTH_LONG).show();
+                    break;
+                case "Pending":
+                    Toast.makeText(this, "Registration is pending approval.", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(this, "Unknown registration status.", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        } else {
+            Toast.makeText(this, "No registration found.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     // input protection in case any valid input is entered
     private boolean validLoginInput(String email, String password) {

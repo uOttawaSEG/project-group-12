@@ -2,6 +2,7 @@ package com.uottawa.seg.group12otams;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +25,8 @@ public class AdminApprovalActivity extends AppCompatActivity implements RequestA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_approval);
 
-        studentDatabase = new Database<>(Student.class, "students");
-        tutorDatabase = new Database<>(Tutor.class, "tutors");
+        studentDatabase = new Database<Student>(Student.class, "students");
+        tutorDatabase = new Database<Tutor>(Tutor.class, "tutors");
 
         rvPendingRequests = findViewById(R.id.rvPendingRequests);
         rvRejectedRequests = findViewById(R.id.rvRejectedRequests);
@@ -65,31 +66,45 @@ public class AdminApprovalActivity extends AppCompatActivity implements RequestA
         String email = request.getString("email");
         String role = request.getString("role");
         String password = request.getString("password");
-        User user = role.equals("Student") ?
-                new Student(
-                        request.getString("firstName"),
-                        request.getString("lastName"),
-                        email,
-                        password,
-                        request.getString("phoneNumber"),
-                        request.getString("programOfStudy")
-                ) :
-                new Tutor(
-                        request.getString("firstName"),
-                        request.getString("lastName"),
-                        email,
-                        password,
-                        request.getString("phoneNumber"),
-                        request.getString("highestDegree"),
-                        (List<String>) request.get("coursesOffered")
-                );
 
-        Database<?> database = role.equals("Student") ? studentDatabase : tutorDatabase;
-        database.approveUser(user, role);
+        if(role.equals("Student")) {
+            Student student = new Student(
+                    request.getString("firstName"),
+                    request.getString("lastName"),
+                    email,
+                    password,
+                    request.getString("phoneNumber"),
+                    request.getString("programOfStudy")
+            );
+
+            studentDatabase.createUser(student);
+            studentDatabase.updateRequestStatus(email, "Approved", task -> {
+                if (task.isSuccessful()) {
+                    pendingAdapter.removeRequest(request);
+                    rejectedAdapter.removeRequest(request);
+                }
+            });
+        }
+        else {
+            Tutor tutor = new Tutor(
+                    request.getString("firstName"),
+                    request.getString("lastName"),
+                    email,
+                    password,
+                    request.getString("phoneNumber"),
+                    request.getString("highestDegree"),
+                    (ArrayList<String>) request.get("coursesOffered")
+            );
+            tutorDatabase.createUser(tutor);
+            tutorDatabase.updateRequestStatus(email, "Approved", task -> {
+                if (task.isSuccessful()) {
+                    pendingAdapter.removeRequest(request);
+                    rejectedAdapter.removeRequest(request);
+                }
+            });
+        }
+
         Toast.makeText(this, "User approved", Toast.LENGTH_SHORT).show();
-        
-        // Refresh UI immediately by removing the item from the adapter
-        pendingAdapter.removeRequest(request);
     }
 
     @Override
