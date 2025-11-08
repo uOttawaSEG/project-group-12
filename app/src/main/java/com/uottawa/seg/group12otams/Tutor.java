@@ -149,6 +149,8 @@ public class Tutor extends User implements Serializable {
         return pastSessions;
     }
 
+
+
     // Remove session
     @Exclude
     public void removeSession(TimeSlot timeSlot) throws IllegalArgumentException {

@@ -350,26 +350,17 @@ public class Database<E> {
 
         TimeSlotRequest timeSlotRequest = new TimeSlotRequest(student.getEmail(), timeSlot.getTutorId(), timeSlot.getTimeSlotId(), status);
 
-//        // Create a HashMap to structure data (no need for class)
-//        Map<String, Object> request = new HashMap<>();
-//        request.put("studentId", student.getEmail());
-//        request.put("timeSlotId", timeSlot.getTimeSlotId());
-//        request.put("status", "Pending");
-
-        // TODO: fix
-//        if (timeSlot.getTutor().getAutoApproveTimeSlotSessions() == true) {
-//            request.put("status", "Approved");
-//        } else {
-//            request.put("status", "Pending");
-//        }
-
-
         // Add timeSlot request to db
         db.collection("time_slot_requests")
                 .document(timeSlot.getTimeSlotId())
                 .set(timeSlotRequest)
                 .addOnSuccessListener(aVoid -> Log.e(TAG, "Time slot request created"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error creating time slot request", e));
+
+        // Set the student as booked
+        if (status.equals("Approved")) {
+            timeSlot.setBookedStudent(student);
+        }
     }
 
     // Delete timeslot request
@@ -396,6 +387,18 @@ public class Database<E> {
                 .update("status", status)
                 .addOnSuccessListener(aVoid -> Log.e(TAG, "Time slot request updated"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error updating time slot request", e));
+
+        // Get the specified time slot request object
+        retrieveAllTimeSlots();
+        TimeSlot timeSlot = timeSlots.get(timeSlotId);
+        if (timeSlot == null) return;
+
+        // Get the student
+        Database<Student> studentDb = new Database<Student>(Student.class, "students");
+        Student student = studentDb.getUser(timeSlotId);
+
+        // Set time slot
+        timeSlot.setBookedStudent(student);
     }
 
     // Returns all timeSlotRequests
