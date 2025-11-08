@@ -21,6 +21,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".TutorDashboardActivity" />
+        <activity android:name=".CreateAvailabilityActivity" />
+        <activity android:name=".PastSessionsActivity" />
+        <activity android:name=".PendingRequestsActivity" />
+        <activity android:name=".UpcomingSessionsActivity" />
         <activity android:name=".TeacherRegistrationActivity" />
         <activity android:name=".StudentRegistrationActivity" />
         <activity android:name=".WelcomeActivity" />

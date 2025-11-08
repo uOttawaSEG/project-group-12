@@ -103,9 +103,13 @@ public class MainActivity extends AppCompatActivity {
                 case "Approved":
                     User user = "Student".equals(role) ? studentDatabase.getUser(email) : tutorDatabase.getUser(email);
                     if (user != null && user.getPassword().equals(password)) {
-                        Intent intent = new Intent(this, WelcomeActivity.class);
-                        intent.putExtra("USER_ROLE", role);
-                        startActivity(intent);
+                        if ("Tutor".equals(role)) {
+                            Intent intent = new Intent(this, TutorDashboardActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(this, WelcomeActivity.class);
+                            startActivity(intent);
+                        }
                     } else {
                         Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT).show();
                     }

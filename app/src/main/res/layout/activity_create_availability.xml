@@ -70,24 +70,27 @@
         <RadioGroup
             android:id="@+id/radioGroupApproval"
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/radioManual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Manual"
                 android:textColor="#FFFFFF" />
             <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/radioAuto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Automatic"
                 android:textColor="#FFFFFF" />
         </RadioGroup>
 
+
         <Button
             android:id="@+id/btnCreateSlot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/RedButton"
             android:text="Create Slot"
             android:layout_marginTop="24dp" />
