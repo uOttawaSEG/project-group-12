@@ -339,7 +339,16 @@ public class Database<E> {
     // Create timeslot request
     public void createTimeSlotRequest(Student student, TimeSlot timeSlot) {
         // Create a simple HashMap to structure data (no need for class)
-        TimeSlotRequest timeSlotRequest = new TimeSlotRequest(student.getEmail(), timeSlot.getTutorId(), timeSlot.getTimeSlotId(), "Pending", false);
+        String status = "Pending";
+
+        Database<Tutor> tutorDb = new Database<Tutor>(Tutor.class, "tutors");
+        Tutor tutor = tutorDb.getUser(timeSlot.getTutorId());
+
+        if (tutor.getAutoApproveTimeSlotSessions() == true) {
+            status = "Approved";
+        }
+
+        TimeSlotRequest timeSlotRequest = new TimeSlotRequest(student.getEmail(), timeSlot.getTutorId(), timeSlot.getTimeSlotId(), status);
 
 //        // Create a HashMap to structure data (no need for class)
 //        Map<String, Object> request = new HashMap<>();

@@ -3,16 +3,16 @@ package com.uottawa.seg.group12otams;
 public class TimeSlotRequest {
     private String studentId;
     private String tutorId;
-    private boolean autoApproveTimeSlotSessions;
+//    private boolean autoApproveTimeSlotSessions;
     private String timeSlotId;
     private String status;
 
-    public TimeSlotRequest(String studentId, String tutorId, String timeSlotId, String status, boolean autoApproveTimeSlotSessions) {
+    public TimeSlotRequest(String studentId, String tutorId, String timeSlotId, String status) {
         this.studentId = studentId;
         this.tutorId = tutorId;
         this.timeSlotId = timeSlotId;
         this.status = status;
-        this.autoApproveTimeSlotSessions = autoApproveTimeSlotSessions;
+//        this.autoApproveTimeSlotSessions = autoApproveTimeSlotSessions;
     }
 
     public TimeSlotRequest() {}
@@ -43,7 +43,7 @@ public class TimeSlotRequest {
     }
 
     // Getter for autoApproveTimeSlotSessions
-    public boolean getAutoApproveTimeSlotSessions() {
-        return autoApproveTimeSlotSessions;
-    }
+//    public boolean getAutoApproveTimeSlotSessions() {
+//        return autoApproveTimeSlotSessions;
+//    }
 }
