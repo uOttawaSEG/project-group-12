@@ -1,6 +1,8 @@
 package com.uottawa.seg.group12otams;
 
-public abstract class User {
+import java.io.Serializable;
+
+public abstract class User implements Serializable {
     protected String firstName;
     protected String lastName;
     // NOTE: email is a unique key only associated to a single User

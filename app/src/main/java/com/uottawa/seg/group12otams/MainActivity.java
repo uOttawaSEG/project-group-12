@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     if (user != null && user.getPassword().equals(password)) {
                         if ("Tutor".equals(role)) {
                             Intent intent = new Intent(this, TutorDashboardActivity.class);
+                            intent.putExtra("tutor", (Tutor) user);
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(this, WelcomeActivity.class);

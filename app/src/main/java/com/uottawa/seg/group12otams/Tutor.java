@@ -1,5 +1,7 @@
 package com.uottawa.seg.group12otams;
 
+import android.util.Log;
+
 import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ public class Tutor extends User {
     // Select start/end time
     // Needs to be valid (30min increments, future date, no overlapping time slots)
     @Exclude
-    public void setTimeSlot(Date startDate, Date endDate) {
+    public void setTimeSlot(Date startDate, Date endDate) throws IllegalArgumentException {
 
         // Throw error if startDate is after endDate
         if (startDate.after(endDate)) {
@@ -67,7 +69,7 @@ public class Tutor extends User {
 
         // Throw error if startDate and endDate are not 30 min apart
         long diff = endDate.getTime() - startDate.getTime();
-        if (diff % (30 * 60 * 1000) != 0) {
+        if (diff <= 0 || diff % (30 * 60 * 1000) != 0) {
             throw new IllegalArgumentException("Time slot must be 30 minutes apart");
         }
 
@@ -86,16 +88,19 @@ public class Tutor extends User {
         ArrayList<TimeSlot> timeSlots = db.getTimeSlots(this);
 
         // Throw an error if the startDate overlaps with any existing time slots
-        for (TimeSlot timeSlot : timeSlots) {
-            if (startDate.after(timeSlot.getEndTime()) || endDate.before(timeSlot.getStartTime())) {
-                continue;
-            } else {
-                throw new IllegalArgumentException("Time slot overlaps with existing time slot");
+        if (timeSlots != null) {
+            for (TimeSlot timeSlot : timeSlots) {
+                if (startDate.after(timeSlot.getEndTime()) || endDate.before(timeSlot.getStartTime())) {
+                    continue;
+                } else {
+                    Log.e("Tutor", "Time slot overlaps with existing one!");
+                    throw new IllegalArgumentException("Time slot overlaps with existing time slot");
+                }
             }
         }
 
         // Add the new time slot to the db
-        db.modifyTimeSlot(new TimeSlot(startDate, endDate, this));
+        db.modifyTimeSlot(new TimeSlot(startDate, endDate, getEmail()));
     }
 
     // Get upcoming sessions
@@ -108,9 +113,14 @@ public class Tutor extends User {
         ArrayList<TimeSlot> upcomingSessions = new ArrayList<>();
         Date now = new Date();
 
+        if (timeSlots == null) return null;
+
+        // Add all upcoming sessions (future sessions)
         for (TimeSlot timeSlot : timeSlots) {
+            Log.e("Tutor", "timeslot - " + timeSlot.getStartTime() + " - " + timeSlot.getEndTime());
             if (timeSlot.getStartTime().after(now)) {
                 upcomingSessions.add(timeSlot);
+                Log.e("Tutor", "added it!");
             }
         }
 
@@ -122,6 +132,8 @@ public class Tutor extends User {
     public ArrayList<TimeSlot> getPastSessions() {
         // fetch from db
         ArrayList<TimeSlot> timeSlots = db.getTimeSlots(this);
+        Log.e("Tutor", "timeSlots size - " + timeSlots.size());
+
 
         // filter out future sessions
         ArrayList<TimeSlot> pastSessions = new ArrayList<>();
@@ -138,7 +150,7 @@ public class Tutor extends User {
 
     // Remove session
     @Exclude
-    public void removeSession(TimeSlot timeSlot) {
+    public void removeSession(TimeSlot timeSlot) throws IllegalArgumentException {
         // Check if a student has booked the timeSlot
         if (timeSlot.getBookedStudent() != null) {
             // Throw error (we can't remove a booked session!)

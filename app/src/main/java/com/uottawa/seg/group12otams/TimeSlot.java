@@ -5,16 +5,18 @@ import java.util.Date;
 public class TimeSlot {
     private Date startTime;
     private Date endTime;
-    private Tutor tutor;
+    private String tutorId;
     private String timeSlotId;
     private Student bookedStudent;
 
-    public TimeSlot(Date startTime, Date endTime, Tutor tutor) {
+    public TimeSlot(Date startTime, Date endTime, String tutorId) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.tutor = tutor;
-        this.timeSlotId = startTime.toString() + "-" + tutor.getEmail();
+        this.tutorId = tutorId;
+        this.timeSlotId = tutorId + "-" + startTime.toString();
     }
+
+    public TimeSlot() {}
 
     // get the start time
     public Date getStartTime() {
@@ -27,8 +29,8 @@ public class TimeSlot {
     }
 
     // get the tutor
-    public Tutor getTutor() {
-        return tutor;
+    public String getTutorId() {
+        return tutorId;
     }
 
     // Get timeSlotId

@@ -32,8 +32,8 @@ public class Database<E> {
     private FirebaseFirestore db;
     private ArrayList<E> users;
     private String dbCollection;
-    private ArrayList<TimeSlot> timeSlots;
-    private ArrayList<TimeSlotRequest> timeSlotRequests;
+    private HashMap<String, TimeSlot> timeSlots;
+    private HashMap<String, TimeSlotRequest> timeSlotRequests;
     public Database(Class<E> userClass, String dbCollection) {
         // Pass in the class, used to convert Firebase responses to objects later
         this.userClass = userClass;
@@ -41,6 +41,8 @@ public class Database<E> {
         db = FirebaseFirestore.getInstance();
         users = new ArrayList<E>();
         this.dbCollection = dbCollection;
+        timeSlots = new HashMap<String, TimeSlot>();
+        timeSlotRequests = new HashMap<String, TimeSlotRequest>();
         TAG = "Database-" + dbCollection;
 
         // Retrieve all users from DB
@@ -266,7 +268,7 @@ public class Database<E> {
                                 // Save all timeslot data into "timeslot"
                                 TimeSlot timeslot = document.toObject(TimeSlot.class);
                                 if (timeslot != null) {
-                                    timeSlots.add(timeslot);
+                                    timeSlots.put(timeslot.getTimeSlotId(), timeslot);
                                 }
 
                                 // Print to Log
@@ -284,18 +286,22 @@ public class Database<E> {
 
     // Returns timeslots of a specific tutor if specified, and all timeslots if not
     public ArrayList<TimeSlot> getTimeSlots(Tutor tutor) {
-        // Get timeslots if null
-        if (timeSlots == null) retrieveAllTimeSlots();
+        // Get timeslots
+        retrieveAllTimeSlots();
+        if (timeSlots == null) return null;
+
+        ArrayList<TimeSlot> timeSlotsArr = new ArrayList<TimeSlot>();
+        timeSlotsArr.addAll(timeSlots.values());
 
         // Return all timeslots if tutor is not specified
-        if (tutor == null) return timeSlots;
+        if (tutor == null) return timeSlotsArr;
 
         // Get and return timeslots of specified tutor
         ArrayList<TimeSlot> specificTimeSlots = new ArrayList<>();
 
         // Add all timeslots of a specific tutor
-        for (TimeSlot timeSlot : timeSlots) {
-            if (Objects.equals(timeSlot.getTutor(), tutor)) {
+        for (TimeSlot timeSlot : timeSlotsArr) {
+            if (Objects.equals(timeSlot.getTutorId(), tutor.getEmail())) {
                 specificTimeSlots.add(timeSlot);
             }
         }
@@ -333,20 +339,26 @@ public class Database<E> {
     // Create timeslot request
     public void createTimeSlotRequest(Student student, TimeSlot timeSlot) {
         // Create a simple HashMap to structure data (no need for class)
-        Map<String, Object> request = new HashMap<>();
-        request.put("studentId", student.getEmail());
-        request.put("timeSlotId", timeSlot.getTimeSlotId());
-        if (timeSlot.getTutor().getAutoApproveTimeSlotSessions() == true) {
-            request.put("status", "Approved");
-        } else {
-            request.put("status", "Pending");
-        }
+        TimeSlotRequest timeSlotRequest = new TimeSlotRequest(student.getEmail(), timeSlot.getTutorId(), timeSlot.getTimeSlotId(), "Pending", false);
+
+//        // Create a HashMap to structure data (no need for class)
+//        Map<String, Object> request = new HashMap<>();
+//        request.put("studentId", student.getEmail());
+//        request.put("timeSlotId", timeSlot.getTimeSlotId());
+//        request.put("status", "Pending");
+
+        // TODO: fix
+//        if (timeSlot.getTutor().getAutoApproveTimeSlotSessions() == true) {
+//            request.put("status", "Approved");
+//        } else {
+//            request.put("status", "Pending");
+//        }
 
 
         // Add timeSlot request to db
         db.collection("time_slot_requests")
                 .document(timeSlot.getTimeSlotId())
-                .set(request)
+                .set(timeSlotRequest)
                 .addOnSuccessListener(aVoid -> Log.e(TAG, "Time slot request created"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error creating time slot request", e));
     }
@@ -390,7 +402,7 @@ public class Database<E> {
                                 // Save all timeslot data into "timeslot"
                                 TimeSlotRequest timeSlotRequest = document.toObject(TimeSlotRequest.class);
                                 if (timeSlotRequest != null) {
-                                    timeSlotRequests.add(timeSlotRequest);
+                                    timeSlotRequests.put(timeSlotRequest.getTimeSlotId(), timeSlotRequest);
                                 }
 
                                 // Print to Log
@@ -411,14 +423,17 @@ public class Database<E> {
         // Get timeslots requests if null
         if (timeSlotRequests == null) retrieveAllTimeSlotRequests();
 
+        ArrayList<TimeSlotRequest> timeSlotRequestsArr = new ArrayList<TimeSlotRequest>();
+        timeSlotRequestsArr.addAll(timeSlotRequests.values());
+
         // Return all timeslots requests if tutor is not specified
-        if (tutor == null) return timeSlotRequests;
+        if (tutor == null) return timeSlotRequestsArr;
 
         // Get and return timeslots requests of specified tutor
         ArrayList<TimeSlotRequest> specificTimeSlotsRequests = new ArrayList<>();
 
         // Add all timeslots of a specific tutor
-        for (TimeSlotRequest timeSlotRequest : timeSlotRequests) {
+        for (TimeSlotRequest timeSlotRequest : timeSlotRequestsArr) {
             if (Objects.equals(timeSlotRequest.getTutorId(), tutor.getEmail())) {
                 specificTimeSlotsRequests.add(timeSlotRequest);
             }
