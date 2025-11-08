@@ -4,11 +4,12 @@ import android.util.Log;
 
 import com.google.firebase.firestore.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Tutor extends User {
+public class Tutor extends User implements Serializable {
     private static final Database<Tutor> db = new Database<Tutor>(Tutor.class, "tutors");
     private String highestDegree;
     private List<String> coursesOffered;
