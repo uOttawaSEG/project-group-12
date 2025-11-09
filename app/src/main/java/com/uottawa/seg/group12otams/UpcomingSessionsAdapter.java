@@ -44,6 +44,13 @@ public class UpcomingSessionsAdapter extends RecyclerView.Adapter<UpcomingSessio
 
         holder.tvSessionTime.setText(time);
 
+        Student booked = ts.getBookedStudent();
+        if (booked != null) {
+            holder.bookedStudent.setText("Booked by: " + booked.getFirstName() + " " + booked.getLastName());
+        } else {
+            holder.bookedStudent.setText("Not booked");
+        }
+
         holder.btnCancel.setOnClickListener(v -> cancelListener.onCancel(ts));
     }
 
@@ -54,11 +61,13 @@ public class UpcomingSessionsAdapter extends RecyclerView.Adapter<UpcomingSessio
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvSessionTime;
+        TextView bookedStudent;
         Button btnCancel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvSessionTime = itemView.findViewById(R.id.tvSessionTime);
+            bookedStudent = itemView.findViewById(R.id.bookedStudent);
             btnCancel = itemView.findViewById(R.id.btnCancel);
         }
     }
