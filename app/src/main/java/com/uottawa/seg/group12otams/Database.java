@@ -332,8 +332,11 @@ public class Database<E> {
                 .document(timeSlotId);
 
         docRef.delete()
-                .addOnCompleteListener(aVoid -> Log.e(TAG, "Successfully deleted user"))
-                .addOnFailureListener(error -> Log.e(TAG, "Error deleting user", error));
+                .addOnCompleteListener(aVoid -> Log.e(TAG, "Successfully deleted timeslot"))
+                .addOnFailureListener(error -> Log.e(TAG, "Error deleting timeslot", error));
+
+        // Delete from local HashMap
+        timeSlots.remove(timeSlotId);
     }
 
     // Create timeslot request
@@ -374,32 +377,9 @@ public class Database<E> {
         docRef.delete()
                 .addOnCompleteListener(aVoid -> Log.e(TAG, "Successfully deleted time slot request"))
                 .addOnFailureListener(error -> Log.e(TAG, "Error deleting time slot request", error));
-    }
 
-
-    public void approveTimeSlotRequestOLD(String timeSlotId, boolean isApproved) {
-        // Update status in db
-        String status = "Approved";
-        if (!isApproved) status = "Rejected";
-
-        db.collection("time_slot_requests")
-                .document(timeSlotId)
-                .update("status", status)
-                .addOnSuccessListener(aVoid -> Log.e(TAG, "Time slot request updated"))
-                .addOnFailureListener(e -> Log.e(TAG, "Error updating time slot request", e));
-
-        // Get the specified time slot request object
-        retrieveAllTimeSlots();
-        TimeSlot timeSlot = timeSlots.get(timeSlotId);
-        if (timeSlot == null) return;
-
-        // Get the student
-        Database<Student> studentDb = new Database<Student>(Student.class, "students");
-        Student student = studentDb.getUser(timeSlotId);
-        Log.e(TAG, "Student - " + student);
-
-        // Set time slot
-        timeSlot.setBookedStudent(student);
+        // Delete from local HashMap
+        timeSlotRequests.remove(timeSlotId);
     }
 
     // Approve or reject a timeslot request
