@@ -31,12 +31,16 @@
 
         <Button
             android:id="@+id/btnApprove"
+            android:layout_width="120dp"
+            android:layout_height="55dp"
             style="@style/RedButton"
             android:text="Approve" />
 
         <Button
             android:id="@+id/btnReject"
             style="@style/RedButton"
+            android:layout_width="120dp"
+            android:layout_height="55dp"
             android:text="Reject"
             android:layout_marginStart="16dp"/>
     </LinearLayout>

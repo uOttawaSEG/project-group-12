@@ -26,6 +26,12 @@ public class UpcomingSessionsActivity extends AppCompatActivity {
         ArrayList<TimeSlot> upcoming = tutor.getUpcomingSessions();
         Log.e("UpcomingSessionsActivity", "Upcoming: " + upcoming);
 
+        // DEBUG
+        // Manually create a pending request
+//        Database<Tutor> tutorDb = new Database<Tutor>(Tutor.class, "tutors");
+//        Student student = new Student("taha", "rashid", "taha@gmail.com", "1234", "437", "cs");
+//        tutorDb.createTimeSlotRequest(student, upcoming.get(1));
+
         adapter = new UpcomingSessionsAdapter(upcoming, timeSlot -> {
             try {
                 tutor.removeSession(timeSlot);  // remove from DB

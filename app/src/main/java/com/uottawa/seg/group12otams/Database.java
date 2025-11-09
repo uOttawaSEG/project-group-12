@@ -344,7 +344,7 @@ public class Database<E> {
         Database<Tutor> tutorDb = new Database<Tutor>(Tutor.class, "tutors");
         Tutor tutor = tutorDb.getUser(timeSlot.getTutorId());
 
-        if (tutor.getAutoApproveTimeSlotSessions() == true) {
+        if (tutor != null && tutor.getAutoApproveTimeSlotSessions() == true) {
             status = "Approved";
         }
 
@@ -376,8 +376,8 @@ public class Database<E> {
                 .addOnFailureListener(error -> Log.e(TAG, "Error deleting time slot request", error));
     }
 
-    // Approve or reject a timeslot request
-    public void approveTimeSlotRequest(String timeSlotId, boolean isApproved) {
+
+    public void approveTimeSlotRequestOLD(String timeSlotId, boolean isApproved) {
         // Update status in db
         String status = "Approved";
         if (!isApproved) status = "Rejected";
@@ -396,9 +396,59 @@ public class Database<E> {
         // Get the student
         Database<Student> studentDb = new Database<Student>(Student.class, "students");
         Student student = studentDb.getUser(timeSlotId);
+        Log.e(TAG, "Student - " + student);
 
         // Set time slot
         timeSlot.setBookedStudent(student);
+    }
+
+    // Approve or reject a timeslot request
+    public void approveTimeSlotRequest(String timeSlotId, boolean isApproved) {
+        String status = isApproved ? "Approved" : "Rejected";
+
+        db.collection("time_slot_requests")
+                .document(timeSlotId)
+                .update("status", status)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Time slot request status updated to " + status);
+
+                    // Quit if the request was not approved
+                    if (!isApproved) {
+                        return;
+                    }
+
+                    // If approved, first get the request to find out the student's ID
+                    db.collection("time_slot_requests").document(timeSlotId).get().addOnSuccessListener(requestDocument -> {
+                        TimeSlotRequest request = requestDocument.toObject(TimeSlotRequest.class);
+                        if (request == null) {
+                            Log.e(TAG, "Could not find the time slot request with ID: " + timeSlotId);
+                            return;
+                        }
+                        String studentId = request.getStudentId();
+                        Log.d(TAG, "Request approved for student: " + studentId);
+
+                        // Fetch the student's full details from the "students" collection
+                        db.collection("students").document(studentId).get().addOnSuccessListener(studentDocument -> {
+                            Student student = studentDocument.toObject(Student.class);
+                            if (student == null) {
+                                Log.e(TAG, "Could not find the student with ID: " + studentId);
+                                return;
+                            }
+                            Log.d(TAG, "Successfully fetched student: " + student.getFirstName());
+
+                            // Get the original TimeSlot and set the booked student
+                            db.collection("time_slots").document(timeSlotId).get().addOnSuccessListener(timeSlotDocument -> {
+                                TimeSlot timeSlot = timeSlotDocument.toObject(TimeSlot.class);
+                                if (timeSlot != null) {
+                                    timeSlot.setBookedStudent(student);
+                                    modifyTimeSlot(timeSlot); // This saves the updated timeSlot
+                                    Log.d(TAG, "Successfully booked student for time slot " + timeSlotId);
+                                }
+                            }).addOnFailureListener(e -> Log.e(TAG, "Failed to retrieve time slot for booking.", e));
+                        }).addOnFailureListener(e -> Log.e(TAG, "Failed to retrieve student.", e));
+                    }).addOnFailureListener(e -> Log.e(TAG, "Failed to retrieve time slot request.", e));
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error updating time slot request status", e));
     }
 
     // Returns all timeSlotRequests
@@ -432,11 +482,13 @@ public class Database<E> {
 
     // Return the timeSlotRequests for a specific tutor. Returns all timeSlotRequests if tutor is not specified (= null)
     public ArrayList<TimeSlotRequest> getTimeSlotRequests(Tutor tutor) {
-        // Get timeslots requests if null
-        if (timeSlotRequests == null) retrieveAllTimeSlotRequests();
+        // Get timeslots requests
+        retrieveAllTimeSlotRequests();
 
         ArrayList<TimeSlotRequest> timeSlotRequestsArr = new ArrayList<TimeSlotRequest>();
         timeSlotRequestsArr.addAll(timeSlotRequests.values());
+        Log.e(TAG, "timeSlotRequestsArr size - " + timeSlotRequestsArr.size());
+        Log.e(TAG, "timeSlotRequests size - " + timeSlotRequests.size());
 
         // Return all timeslots requests if tutor is not specified
         if (tutor == null) return timeSlotRequestsArr;
