@@ -8,18 +8,25 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tvStudentName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/dark_red"
-        android:textSize="18sp"
-        android:text="Student Name" />
-
-    <TextView
         android:id="@+id/tvSessionTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/dark_red"
-        android:textSize="16sp"
-        android:text="Date &amp; Time" />
+        android:textSize="18sp"
+        android:text="Start — End" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/RedButton"
+            android:text="Cancel"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
 </LinearLayout>
