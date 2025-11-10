@@ -485,4 +485,15 @@ public class Database<E> {
 
         return specificTimeSlotsRequests;
     }
+
+    // Update Tutor autoApproveTimeSlotSessions property in the database
+    public void updateTutorAutoApproveTimeSlotSessions(Tutor tutor, OnCompleteListener<Void> listener) {
+       String status = tutor.getAutoApproveTimeSlotSessions() ? "Approved" : "Pending";
+
+        // Update in db"
+        db.collection("tutors")
+                .document(tutor.getEmail())
+                .update("status", status)
+                .addOnCompleteListener(listener);
+    }
 }

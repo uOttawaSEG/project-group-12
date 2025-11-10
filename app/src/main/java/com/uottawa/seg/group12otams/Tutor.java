@@ -15,7 +15,7 @@ public class Tutor extends User implements Serializable {
     private List<String> coursesOffered;
     private boolean autoApproveTimeSlotSessions = false;
 
-    public Tutor(String firstName, String lastName, String email, String password, String phoneNumber, String highestDegree, List<String> coursesOffered) {
+    public Tutor(String firstName, String lastName, String email, String password, String phoneNumber, String highestDegree, List<String> coursesOffered, boolean autoApproveTimeSlotSessions) {
         super(firstName, lastName, email, password, phoneNumber);
         this.highestDegree = highestDegree;
         this.coursesOffered = coursesOffered;
@@ -168,13 +168,13 @@ public class Tutor extends User implements Serializable {
     @Exclude
     public void setAutoApproveTimeSlotSessions(boolean autoApproveTimeSlotSessions) {
         this.autoApproveTimeSlotSessions = autoApproveTimeSlotSessions;
+        // Update in DB
+        db.updateTutorAutoApproveTimeSlotSessions(this, null);
     }
 
     // Getter for autoApproveTimeSlotSessions
     @Exclude
-    public boolean getAutoApproveTimeSlotSessions() {
-        return autoApproveTimeSlotSessions;
-    }
+    public boolean getAutoApproveTimeSlotSessions() { return autoApproveTimeSlotSessions; }
 
     // Approve or reject a timeslot request
     @Exclude

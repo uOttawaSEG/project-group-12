@@ -93,7 +93,8 @@ public class AdminApprovalActivity extends AppCompatActivity implements RequestA
                     password,
                     request.getString("phoneNumber"),
                     request.getString("highestDegree"),
-                    (ArrayList<String>) request.get("coursesOffered")
+                    (ArrayList<String>) request.get("coursesOffered"),
+                    request.getBoolean("autoApproveTimeSlotSessions")
             );
             tutorDatabase.createUser(tutor);
             tutorDatabase.updateRequestStatus(email, "Approved", task -> {

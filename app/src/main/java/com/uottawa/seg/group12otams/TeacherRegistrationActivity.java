@@ -74,7 +74,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity {
             }
 
             // add registration to database
-            Tutor newUser = new Tutor(firstName, lastName, email, password, phoneNumber, degree, coursesList);
+            Tutor newUser = new Tutor(firstName, lastName, email, password, phoneNumber, degree, coursesList, false);
             tutorDatabase.createRegistrationRequest(newUser, "Tutor");
 
             // make a pop up message to show registration successful
