@@ -71,4 +71,10 @@ public class UpcomingSessionsAdapter extends RecyclerView.Adapter<UpcomingSessio
             btnCancel = itemView.findViewById(R.id.btnCancel);
         }
     }
+
+    public void updateList(ArrayList<TimeSlot> newList) {
+        this.timeSlots = newList;
+        notifyDataSetChanged();
+    }
+
 }

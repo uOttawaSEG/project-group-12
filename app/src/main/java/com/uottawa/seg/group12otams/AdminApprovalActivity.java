@@ -94,8 +94,9 @@ public class AdminApprovalActivity extends AppCompatActivity implements RequestA
                     request.getString("phoneNumber"),
                     request.getString("highestDegree"),
                     (ArrayList<String>) request.get("coursesOffered"),
-                    request.getBoolean("autoApproveTimeSlotSessions")
+                    false
             );
+            tutor.setAutoApproveTimeSlotSessions(false);
             tutorDatabase.createUser(tutor);
             tutorDatabase.updateRequestStatus(email, "Approved", task -> {
                 if (task.isSuccessful()) {

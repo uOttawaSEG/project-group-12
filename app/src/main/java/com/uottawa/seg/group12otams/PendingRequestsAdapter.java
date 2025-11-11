@@ -55,7 +55,6 @@ public class PendingRequestsAdapter extends RecyclerView.Adapter<PendingRequests
 
         holder.tvStudent.setText("Student: " + request.getStudentId());
 
-        // Optional date formatting if you implement fetching TimeSlot
         holder.tvTime.setText("TimeSlot ID: " + request.getTimeSlotId());
 
         holder.btnApprove.setOnClickListener(v -> actions.onApprove(request));

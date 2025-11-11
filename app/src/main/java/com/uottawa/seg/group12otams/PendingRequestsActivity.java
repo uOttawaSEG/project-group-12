@@ -1,7 +1,6 @@
 package com.uottawa.seg.group12otams;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +14,7 @@ public class PendingRequestsActivity extends AppCompatActivity {
     private Tutor tutor;
     private RecyclerView rvPending;
     private PendingRequestsAdapter adapter;
+    private ArrayList<TimeSlotRequest> requests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,7 @@ public class PendingRequestsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pending_requests);
 
         tutor = (Tutor) getIntent().getSerializableExtra("tutor");
+
         rvPending = findViewById(R.id.rvPendingRequests);
         rvPending.setLayoutManager(new LinearLayoutManager(this));
 
@@ -29,30 +30,36 @@ public class PendingRequestsActivity extends AppCompatActivity {
     }
 
     private void loadPendingRequests() {
-        ArrayList<TimeSlotRequest> requests = tutor.getPendingTimeSlotRequests();
+        requests = tutor.getPendingTimeSlotRequests();
 
-        if (requests == null || requests.isEmpty()) {
-            Toast.makeText(this, "No pending requests.", Toast.LENGTH_SHORT).show();
-            return;
+        if (requests == null) {
+            requests = new ArrayList<>();
         }
 
-        adapter = new PendingRequestsAdapter(requests, new PendingRequestsAdapter.RequestActions() {
-            @Override
-            public void onApprove(TimeSlotRequest request) {
-                tutor.setTimeSlotRequestStatus(request.getTimeSlotId(), true);
-                request.setStatus("Approved");
-                Toast.makeText(PendingRequestsActivity.this, "Request approved", Toast.LENGTH_SHORT).show();
-                loadPendingRequests();
-            }
+        adapter = new PendingRequestsAdapter(
+                requests,
+                new PendingRequestsAdapter.RequestActions() {
+                    @Override
+                    public void onApprove(TimeSlotRequest request) {
+                        tutor.setTimeSlotRequestStatus(request.getTimeSlotId(), true);
+                        request.setStatus("Approved");
+                        requests.remove(request);
+                        adapter.notifyDataSetChanged();
 
-            @Override
-            public void onReject(TimeSlotRequest request) {
-                tutor.setTimeSlotRequestStatus(request.getTimeSlotId(), false);
-                request.setStatus("Rejected");
-                Toast.makeText(PendingRequestsActivity.this, "Request rejected", Toast.LENGTH_SHORT).show();
-                loadPendingRequests();
-            }
-        });
+                        Toast.makeText(PendingRequestsActivity.this, "Approved", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onReject(TimeSlotRequest request) {
+                        tutor.setTimeSlotRequestStatus(request.getTimeSlotId(), false);
+                        request.setStatus("Rejected");
+                        requests.remove(request);
+                        adapter.notifyDataSetChanged();
+
+                        Toast.makeText(PendingRequestsActivity.this, "Rejected", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
 
         rvPending.setAdapter(adapter);
     }

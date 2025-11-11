@@ -13,6 +13,7 @@ public class TutorDashboardActivity extends AppCompatActivity {
     private Button btnUpcomingSessions;
     private Button btnPastSessions;
     private Button btnPendingRequests;
+    private Button btnLogout;
     private Tutor tutor;
 
     @Override
@@ -38,6 +39,7 @@ public class TutorDashboardActivity extends AppCompatActivity {
         btnUpcomingSessions = findViewById(R.id.btnUpcomingSessions);
         btnPastSessions = findViewById(R.id.btnPastSessions);
         btnPendingRequests = findViewById(R.id.btnPendingRequests);
+        btnLogout = findViewById(R.id.logout);
     }
 
     private void setupClickListeners() {
@@ -63,6 +65,11 @@ public class TutorDashboardActivity extends AppCompatActivity {
             Intent intent = new Intent(this, PendingRequestsActivity.class);
             intent.putExtra("tutor", tutor);
             startActivity(intent);
+        });
+
+        btnLogout.setOnClickListener(v -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
         });
     }
 }
