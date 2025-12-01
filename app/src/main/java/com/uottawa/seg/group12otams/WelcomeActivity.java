@@ -20,6 +20,8 @@ public class WelcomeActivity extends AppCompatActivity{
     // Instance variables
     private TextView edtWelcomeText;
     private Button edtWelcomeLogout;
+    private Button btnStudentSearch, btnStudentSessions;
+    private Student student;
 
 
     @Override
@@ -39,6 +41,14 @@ public class WelcomeActivity extends AppCompatActivity{
     private void initializeViews() {
         edtWelcomeText = findViewById(R.id.edtWelcomeText);
         edtWelcomeLogout = findViewById(R.id.edtWelcomeLogout);
+        btnStudentSearch = findViewById(R.id.btnStudentSearch);
+        btnStudentSessions = findViewById(R.id.btnStudentSessions);
+        // buttons may not exist for other roles; guard nulls
+        if (btnStudentSearch != null) btnStudentSearch.setVisibility(View.GONE);
+        if (btnStudentSessions != null) btnStudentSessions.setVisibility(View.GONE);
+
+        // grab student if provided
+        student = (Student) getIntent().getSerializableExtra("student");
     }
 
     // logic when it comes to the welcome text on the welcome page
@@ -53,6 +63,12 @@ public class WelcomeActivity extends AppCompatActivity{
         // updating the message text
         String welcomeMessage = "Welcome! You are logged in as " + role;
         edtWelcomeText.setText(welcomeMessage);
+
+        // Show student actions for students only
+        if ("Student".equalsIgnoreCase(role)) {
+            if (btnStudentSearch != null) btnStudentSearch.setVisibility(View.VISIBLE);
+            if (btnStudentSessions != null) btnStudentSessions.setVisibility(View.VISIBLE);
+        }
     }
 
     // clicker method to go back to main page after clicking log out
@@ -64,6 +80,30 @@ public class WelcomeActivity extends AppCompatActivity{
             startActivity(intent);
             finish(); // closes and stops the activity
         });
+
+        if (btnStudentSearch != null) {
+            btnStudentSearch.setOnClickListener(v -> {
+                if (student == null) {
+                    Toast.makeText(this, "Student not loaded yet", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent i = new Intent(this, StudentSearchActivity.class);
+                i.putExtra("student", student);
+                startActivity(i);
+            });
+        }
+
+        if (btnStudentSessions != null) {
+            btnStudentSessions.setOnClickListener(v -> {
+                if (student == null) {
+                    Toast.makeText(this, "Student not loaded yet", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent i = new Intent(this, StudentSessionsActivity.class);
+                i.putExtra("student", student);
+                startActivity(i);
+            });
+        }
     }
 
 }

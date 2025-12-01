@@ -35,6 +35,32 @@
         android:layout_marginTop="200dp" />
 
     <Button
+        android:id="@+id/btnStudentSearch"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:text="Search Sessions"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button_purple"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/edtWelcomeText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <Button
+        android:id="@+id/btnStudentSessions"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:text="My Sessions"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button_purple"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/btnStudentSearch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <Button
         android:id="@+id/edtWelcomeLogout"
         android:layout_width="0dp"
         android:layout_height="55dp"
@@ -42,9 +68,9 @@
         android:textColor="#FFFFFF"
         android:background="@drawable/rounded_button_purple"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/edtWelcomeText"
+        app:layout_constraintTop_toBottomOf="@id/btnStudentSessions"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="260dp" />
+        android:layout_marginTop="24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

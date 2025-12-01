@@ -14,6 +14,8 @@ public class Tutor extends User implements Serializable {
     private String highestDegree;
     private List<String> coursesOffered;
     private boolean autoApproveTimeSlotSessions = false;
+    // Ratings 1..5 left by students after sessions
+    private List<Integer> ratings = new ArrayList<>();
 
     public Tutor(String firstName, String lastName, String email, String password, String phoneNumber, String highestDegree, List<String> coursesOffered, boolean autoApproveTimeSlotSessions) {
         super(firstName, lastName, email, password, phoneNumber);
@@ -37,6 +39,22 @@ public class Tutor extends User implements Serializable {
 
     public void setCoursesOffered(List<String> coursesOffered) {
         this.coursesOffered = coursesOffered;
+    }
+
+    // Ratings accessors
+    public List<Integer> getRatings() { return ratings; }
+    public void setRatings(List<Integer> ratings) { this.ratings = ratings; }
+    @Exclude
+    public double getAverageRating() {
+        if (ratings == null || ratings.isEmpty()) return 0.0;
+        double sum = 0;
+        for (Integer r : ratings) { if (r != null) sum += r; }
+        return Math.round((sum / ratings.size()) * 10.0) / 10.0; // 1 decimal
+    }
+    @Exclude
+    public void addRating(int rating) {
+        if (rating < 1 || rating > 5) throw new IllegalArgumentException("Rating must be 1..5");
+        db.addTutorRating(this, rating);
     }
 
     @Override

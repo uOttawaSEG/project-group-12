@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -495,5 +496,28 @@ public class Database<E> {
                 .document(tutor.getEmail())
                 .update("status", status)
                 .addOnCompleteListener(listener);
+    }
+
+    // Add a rating (1..5) to a tutor document's ratings array
+    public void addTutorRating(Tutor tutor, int rating) {
+        if (tutor == null) return;
+        db.collection("tutors")
+                .document(tutor.getEmail())
+                .update("ratings", FieldValue.arrayUnion(rating))
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Added rating to tutor " + tutor.getEmail()))
+                .addOnFailureListener(e -> Log.e(TAG, "Failed adding rating", e));
+    }
+
+    // Async helpers for Activities
+    public void queryTimeSlots(OnCompleteListener<QuerySnapshot> listener) {
+        db.collection("time_slots").get().addOnCompleteListener(listener);
+    }
+
+    public void queryTimeSlotRequests(OnCompleteListener<QuerySnapshot> listener) {
+        db.collection("time_slot_requests").get().addOnCompleteListener(listener);
+    }
+
+    public void queryTutors(OnCompleteListener<QuerySnapshot> listener) {
+        db.collection("tutors").get().addOnCompleteListener(listener);
     }
 }

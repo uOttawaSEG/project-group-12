@@ -30,6 +30,8 @@
         <activity android:name=".StudentRegistrationActivity" />
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".AdminApprovalActivity" />
+        <activity android:name=".StudentSessionsActivity" />
+        <activity android:name=".StudentSearchActivity" />
     </application>
 
 </manifest>

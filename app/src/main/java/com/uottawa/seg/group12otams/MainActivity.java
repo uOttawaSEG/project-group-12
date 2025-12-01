@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(this, WelcomeActivity.class);
+                            intent.putExtra("USER_ROLE", "Student");
+                            intent.putExtra("student", (Student) user);
                             startActivity(intent);
                         }
                     } else {
